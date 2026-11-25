@@ -1,0 +1,46 @@
+workflows:
+  ios-simulator-appetize:
+    name: MetalPro - iOS Simulator (.app) for Appetize
+    max_build_duration: 90
+    instance_type: mac_mini_m2
+    environment:
+      flutter: stable
+      xcode: latest
+      cocoapods: default
+    scripts:
+      - name: Flutter paketlerini al
+        script: flutter pub get
+      - name: Analiz ve testler
+        script: |
+          flutter analyze
+          flutter test
+      - name: CocoaPods bagimliliklari (Podfile varsa)
+        script: |
+          if [ -f ios/Podfile ]; then
+            (cd ios && pod install)
+          fi
+      - name: Imzasiz iOS Simulator derlemesi
+        script: flutter build ios --simulator
+      - name: Appetize icin zip olustur
+        script: |
+          cd build/ios/iphonesimulator
+          zip -r "$CM_BUILD_DIR/MetalPro-ios-simulator.zip" Runner.app
+          test -f "$CM_BUILD_DIR/MetalPro-ios-simulator.zip"
+    artifacts:
+      - MetalPro-ios-simulator.zip
+      - build/ios/iphonesimulator/Runner.app
+
+    # Appetize hesabindan API token al, ilk yuklemeyi elle yapip
+    # uygulamanin publicKey degerini ogren. Codemagic'te appetize_credentials
+    # adli environment group olustur: APPETIZE_API_TOKEN, APPETIZE_APP_PUBLIC_KEY.
+    # Ardindan environment bolumune ekle:
+    #   groups:
+    #     - appetize_credentials
+    # Ve asagidaki publishing blomunun yorumunu kaldir:
+    # publishing:
+    #   scripts:
+    #     - name: Appetize'a yukle
+    #       script: |
+    #         curl --location --request POST \
+    #           "https://$APPETIZE_API_TOKEN@api.appetize.io/v1/apps/$APPETIZE_APP_PUBLIC_KEY" \
+    #           --form "file=@$CM_BUILD_DIR/MetalPro-ios-simulator.zip"
