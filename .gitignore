@@ -33,6 +33,9 @@ migrate_working_dir/
 /build/
 /coverage/
 
+# Appetize iOS simulator artifact (large, rebuilt by CI)
+MetalPro-ios-simulator.zip
+
 # Symbolication related
 app.*.symbols
 

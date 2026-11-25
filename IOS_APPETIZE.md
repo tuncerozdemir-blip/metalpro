@@ -77,3 +77,18 @@ hesabı gerekmez.
 - `Info.plist` görünen ad `MetalPro`, yönelim yalnızca portrait
 - `.app` derlemesi yalnızca macOS + Xcode ortamında yapılabilir; bu Windows
   makinede doğrulanamaz.
+
+## Gerçek sonuç (26.11.2026)
+
+- GitHub repo: `https://github.com/tuncerozdemir-blip/metalpro` (public, `main`)
+- Codemagic uygulaması: `metalpro`, workflow `ios-simulator-appetize`
+- Build: `6b076b695875c49912d62263` — başarılı (~3 dk)
+  (`flutter analyze`, `flutter test`, `flutter build ios --simulator` dahil)
+- Artifact: `MetalPro-ios-simulator.zip`, 52,10 MB, proje köküne indirildi
+- Appetize uygulaması: **MetalPro v1.0.0**, platform iOS, iPhone 14 Pro / iOS 17.2
+- Simülatör bağlantısı: https://appetize.io/app/ltxfv7433snkfs25q7eed7oap4
+- Yükleme yöntemi: Appetize API (`POST /v1/apps`, `X-API-KEY`, `platform=ios`),
+  çünkü uygulama içi tarayıcı 5 MB dosya sınırına takıldı.
+- Ücretsiz plan: 30 dk/ay, oturum başına 3 dk.
+- Appetize API token’ı yükleme sonrası yerel geçici dosyadan silindi; gerekirse
+  `https://appetize.io/organization/api-tokens` adresinden yeniden üretilebilir.
